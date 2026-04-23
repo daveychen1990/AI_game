@@ -1,0 +1,148 @@
+```mermaid
+%% 游戏开发工作室协作流程图
+flowchart TD
+    subgraph USER["用户(你)"]
+        U["提出游戏创意"]
+    end
+
+    subgraph PRODUCER["制作人 (game-producer)"]
+        P1["需求沟通确认"]
+        P2["创建任务清单"]
+        P3["策划文档审批(二审)"]
+        P4["进度跟踪"]
+        P5["最终验收"]
+        P6["下一步沟通"]
+    end
+
+    subgraph DESIGN["策划组"]
+        subgraph LEAD_DES["主策划 (lead-designer)"]
+            LD1["任务分类下发"]
+            LD2["一审审查"]
+            LD3["整合提交"]
+            LD4["打回修改"]
+        end
+
+        subgraph SYS_DES["系统策划 (system-designer)"]
+            SD1["系统设计"]
+            SD2["文档撰写"]
+        end
+
+        subgraph NUM_DES["数值策划 (numeric-designer)"]
+            ND1["数值建模"]
+            ND2["平衡验证"]
+        end
+    end
+
+    subgraph ART["美术组"]
+        subgraph LEAD_ART["主美 (lead-artist)"]
+            LA1["美术需求确认"]
+            LA2["风格定义"]
+            LA3["核心资源生产"]
+            LA4["质量审核"]
+            LA5["资源交付"]
+        end
+
+        subgraph UI_ART["UI美术 (ui-artist)"]
+            UA1["UI设计"]
+            UA2["图标制作"]
+        end
+    end
+
+    subgraph CODE["程序组"]
+        subgraph LEAD_PROG["主程 (lead-programmer)"]
+            LP1["技术架构"]
+            LP2["任务提炼下发"]
+            LP3["核心开发"]
+            LP4["资源集成"]
+            LP5["通知测试"]
+        end
+
+        subgraph FE_PROG["前端程序 (frontend-programmer)"]
+            FP1["UI实现"]
+            FP2["交互逻辑"]
+        end
+
+        subgraph BE_PROG["后端程序 (backend-programmer)"]
+            BP1["API开发"]
+            BP2["数据库设计"]
+        end
+    end
+
+    subgraph QA["测试 (qa-tester)"]
+        QA1["测试准备"]
+        QA2["功能测试"]
+        QA3["Bug记录"]
+        QA4["测试报告"]
+        QA5["反馈制作人"]
+    end
+
+    %% 流程连接
+    U --> P1
+    P1 --> P2
+
+    %% 策划流程
+    P2 --> LD1
+    LD1 -->|系统设计任务| SD1
+    LD1 -->|数值设计任务| ND1
+    SD1 --> SD2
+    ND1 --> ND2
+    SD2 --> LD2
+    ND2 --> LD2
+    LD2 -->|不通过| LD4
+    LD4 --> SD1
+    LD4 --> ND1
+    LD2 -->|通过| LD3
+    LD3 --> P3
+    P3 -->|不通过| LD4
+    P3 -->|通过| LP1
+
+    %% 美术流程
+    P2 --> LA1
+    LA1 -->|与用户确认| LA2
+    LA2 --> LA3
+    LA3 --> LA4
+    LA4 -->|分配UI任务| UA1
+    UA1 --> UA2
+    UA2 --> LA4
+    LA4 --> LA5
+    LA5 -->|美术资源| LP4
+
+    %% 程序流程
+    LP1 --> LP2
+    LP2 -->|客户端任务| FP1
+    LP2 -->|服务端任务| BP1
+    FP1 --> FP2
+    BP1 --> BP2
+    FP2 --> LP3
+    BP2 --> LP3
+    LP3 --> LP4
+    LP4 --> LP5
+    LP5 --> QA1
+
+    %% 测试流程
+    QA1 --> QA2
+    QA2 --> QA3
+    QA3 --> QA4
+    QA4 --> QA5
+    QA5 -->|更新任务清单| P4
+    QA5 --> P5
+    P5 -->|通过| P6
+    P5 -->|不通过| LP3
+    P6 -->|下一轮迭代| U
+
+    %% 样式定义
+    style USER fill:#e1f5fe
+    style PRODUCER fill:#fff3e0
+    style DESIGN fill:#f3e5f5
+    style ART fill:#fce4ec
+    style CODE fill:#e8f5e9
+    style QA fill:#ffebee
+
+    style P1 fill:#ffe0b2
+    style P3 fill:#ffe0b2
+    style P5 fill:#ffe0b2
+    style LD2 fill:#e1bee7
+    style LA4 fill:#f8bbd0
+    style LP5 fill:#c8e6c9
+    style QA4 fill:#ffcdd2
+```

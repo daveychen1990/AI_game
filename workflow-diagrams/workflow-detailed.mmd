@@ -1,0 +1,145 @@
+```mermaid
+%% 详细的游戏开发工作室协作流程图 - 包含任务清单更新节点
+sequenceDiagram
+    autonumber
+
+    actor U as 用户
+
+    participant PROD as 制作人
+    participant TASK as 任务清单
+
+    box 策划组
+    participant LD as 主策划
+    participant SD as 系统策划
+    participant ND as 数值策划
+    end
+
+    box 美术组
+    participant LA as 主美
+    participant UI as UI美术
+    end
+
+    box 程序组
+    participant LP as 主程
+    participant FE as 前端程序
+    participant BE as 后端程序
+    end
+
+    participant QA as 测试
+
+    Note over U,QA: ========== 阶段1: 需求确认 ==========
+    U->>PROD: 提出游戏创意
+    PROD->>U: 沟通确认需求细节
+    U-->>PROD: 确认需求
+    PROD->>TASK: 创建项目任务清单
+
+    Note over U,QA: ========== 阶段2: 策划阶段 ==========
+    PROD->>LD: 下发策划需求
+    LD->>TASK: 创建策划任务 (DES-xxx)
+
+    par 系统策划工作
+        LD->>SD: 下发系统设计任务
+        SD->>SD: 系统设计 & 文档撰写
+        SD->>LD: 提交系统设计文档
+    and 数值策划工作
+        LD->>ND: 下发数值设计任务
+        ND->>ND: 数值建模 & 平衡验证
+        ND->>LD: 提交数值设计文档
+    end
+
+    LD->>LD: 一审审查
+    alt 审查不通过
+        LD->>SD: 打回修改 (附意见)
+        LD->>ND: 打回修改 (附意见)
+        SD->>LD: 重新提交
+        ND->>LD: 重新提交
+        LD->>LD: 重新审查
+    end
+
+    LD->>LD: 整合策划文档
+    LD->>TASK: 更新任务状态 → 审查中
+    LD->>PROD: 提交策划文档 (二审)
+    PROD->>PROD: 最终审批
+
+    alt 审批不通过
+        PROD->>LD: 打回修改 (附意见)
+        LD->>SD: 分发修改任务
+        LD->>ND: 分发修改任务
+        SD->>LD: 修改完成
+        ND->>LD: 修改完成
+        LD->>PROD: 重新提交
+    end
+
+    PROD->>TASK: 更新策划任务 → 已完成
+
+    Note over U,QA: ========== 阶段3: 美术阶段 (与策划并行) ==========
+    PROD->>LA: 下发美术需求
+    LA->>U: 直接沟通确认美术风格
+    U-->>LA: 确认风格偏好
+    LA->>LA: 制作美术风格指南
+    LA->>TASK: 创建美术任务 (ART-xxx)
+    LA->>UI: 分配UI设计任务
+
+    par 主美工作
+        LA->>LA: 生产核心美术资源
+        LA->>LA: 质量审核
+    and UI工作
+        UI->>UI: UI设计 & 图标制作
+        UI->>LA: 提交UI设计稿
+        LA->>LA: UI风格审核
+    end
+
+    LA->>TASK: 更新美术任务 → 已完成
+    LA->>LP: 交付美术资源
+    LP->>LA: 技术验收
+
+    Note over U,QA: ========== 阶段4: 开发阶段 ==========
+    PROD->>LP: 转发已审批的策划文档
+    LP->>LP: 设计技术架构
+    LP->>TASK: 创建开发任务 (DEV-xxx)
+
+    LP->>FE: 下发客户端开发任务
+    LP->>BE: 下发服务端开发任务
+
+    par 前端开发
+        FE->>FE: UI实现 & 交互逻辑
+        FE->>FE: 联调后端接口
+    and 后端开发
+        BE->>BE: 数据库设计
+        BE->>BE: API开发 & 业务逻辑
+    and 主程核心开发
+        LP->>LP: 架构搭建 & 核心系统
+    end
+
+    FE->>LP: 提交前端代码
+    BE->>LP: 提交后端代码
+    LP->>LP: 集成 & 资源更新
+    LP->>TASK: 更新开发任务 → 已完成
+    LP->>TASK: 创建测试任务 (TEST-xxx)
+
+    Note over U,QA: ========== 阶段5: 测试验收 ==========
+    LP->>QA: 通知功能可测试
+    QA->>QA: 测试准备 & 用例设计
+    QA->>QA: 执行功能测试
+
+    alt 发现Bug
+        QA->>QA: 记录Bug (BUG-xxx)
+        QA->>LP: 反馈Bug (通知修复)
+        LP->>FE: 分配修复任务 (前端)
+        LP->>BE: 分配修复任务 (后端)
+        FE->>LP: Bug修复完成
+        BE->>LP: Bug修复完成
+        LP->>QA: 通知重新验证
+        QA->>QA: 验证Bug修复
+    end
+
+    QA->>TASK: 更新测试任务 → 已完成
+    QA->>PROD: 提交测试报告
+
+    Note over U,QA: ========== 阶段6: 迭代沟通 ==========
+    PROD->>TASK: 更新任务清单最终状态
+    PROD->>U: 汇报项目进展
+    PROD->>U: 下一步需求沟通
+    U-->>PROD: 提出新需求/修改意见
+    PROD->>TASK: 创建新一轮任务
+```
