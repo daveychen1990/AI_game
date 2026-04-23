@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1770：帝国北美</title>
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Historical Strategy Roguelite Prototype</p>
+          <h1>1770：帝国北美</h1>
+        </div>
+        <div class="topbar__meta">
+          <span>PC Web Demo</span>
+          <span>大地图回合制</span>
+          <span>F 全屏</span>
+        </div>
+      </header>
+
+      <main class="war-room">
+        <aside class="panel panel--left">
+          <div id="imperial-dossier"></div>
+          <div id="region-dossier"></div>
+          <div id="faction-ledger"></div>
+        </aside>
+
+        <section class="map-shell">
+          <div class="map-frame">
+            <div id="game-root" aria-label="1770 北美战略地图"></div>
+          </div>
+          <div id="campaign-log" class="campaign-log"></div>
+        </section>
+
+        <aside class="panel panel--right">
+          <div id="command-panel"></div>
+          <div id="event-panel"></div>
+        </aside>
+      </main>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
