@@ -13,13 +13,23 @@ export interface EmperorAttributes {
   resolve: number;
 }
 
-export interface EmperorProfile {
+export interface EmperorAbility {
+  id: string;
   name: string;
+  type: string;
+  description: string;
+}
+
+export interface EmperorProfile {
+  id: string;
+  name: string;
+  dynasty: string;
   epithet: string;
   archetype: Archetype;
   ambition: string;
   traits: string[];
   attributes: EmperorAttributes;
+  ability: EmperorAbility;
 }
 
 export interface RegionNode {
@@ -124,4 +134,9 @@ export interface ActionSelection {
   actionId: ActionId;
   targetRegionId?: string;
   cardId?: string;
+}
+
+export interface CreateRunOptions {
+  emperorId?: string;
+  startRegionId?: string;
 }

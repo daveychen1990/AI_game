@@ -4,6 +4,23 @@ import { EmpireController, buildRenderText } from "../../src/sim/controller";
 import { createSequenceRng } from "../../src/sim/random";
 
 describe("EmpireController", () => {
+  it("starts and restarts with a selected Chinese emperor", () => {
+    const controller = new EmpireController(createSequenceRng([0.02, 0.61, 0.14, 0.87]), {
+      emperorId: "zhao-kuangyin"
+    });
+
+    expect(controller.getState().emperor.name).toBe("赵匡胤");
+    expect(controller.getState().emperor.epithet).toBe("宋太祖");
+
+    controller.restart(createSequenceRng([0.21, 0.44, 0.68]), {
+      emperorId: "zhao-kuangyin",
+      startRegionId: "appalachian-gate"
+    });
+
+    expect(controller.getState().emperor.id).toBe("zhao-kuangyin");
+    expect(controller.getState().startRegionId).toBe("appalachian-gate");
+  });
+
   it("tracks region selection and routes expansion through the selected region", () => {
     const controller = new EmpireController(createSequenceRng([0.02, 0.61, 0.14, 0.87, 0.33, 0.48, 0.72, 0.19, 0.44]));
     const origin = controller.getState().selectedRegionId;

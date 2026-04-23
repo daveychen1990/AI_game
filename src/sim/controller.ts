@@ -1,6 +1,6 @@
 import { applyEventChoice, createRunState, performAction } from "./engine";
 import { createSequenceRng, type SequenceRng } from "./random";
-import type { ActionId, RunState } from "./types";
+import type { ActionId, CreateRunOptions, RunState } from "./types";
 
 type Listener = (state: RunState) => void;
 
@@ -13,8 +13,8 @@ export class EmpireController {
 
   private listeners = new Set<Listener>();
 
-  constructor(random: SequenceRng = createSequenceRng([0.17, 0.43, 0.69, 0.23, 0.81, 0.37, 0.55])) {
-    this.state = createRunState(random);
+  constructor(random: SequenceRng = createSequenceRng([0.17, 0.43, 0.69, 0.23, 0.81, 0.37, 0.55]), options: CreateRunOptions = {}) {
+    this.state = createRunState(random, options);
   }
 
   getState(): RunState {
@@ -56,8 +56,8 @@ export class EmpireController {
     this.emit();
   }
 
-  restart(random: SequenceRng = createSequenceRng([0.17, 0.43, 0.69, 0.23, 0.81, 0.37, 0.55])): void {
-    this.state = createRunState(random);
+  restart(random: SequenceRng = createSequenceRng([0.17, 0.43, 0.69, 0.23, 0.81, 0.37, 0.55]), options: CreateRunOptions = {}): void {
+    this.state = createRunState(random, options);
     this.emit();
   }
 

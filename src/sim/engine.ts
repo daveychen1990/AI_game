@@ -10,10 +10,12 @@ import {
   START_REGION_IDS,
   TRAIT_POOL
 } from "./content";
+import { getEmperorProfileById } from "./emperors";
 import { nextRandom, pickOne } from "./random";
 import type {
   ActionSelection,
   Archetype,
+  CreateRunOptions,
   DecisionCard,
   EmperorAttributes,
   EmperorProfile,
@@ -118,14 +120,22 @@ function createEmperor(random: RunState["random"]): [EmperorProfile, RunState["r
 
   const descriptor = ARCHETYPE_NAMES[archetype];
 
-  return [
+    return [
     {
+      id: `wanderer-${archetype}-${name}-${epithet}`,
       name,
+      dynasty: "异世",
       epithet,
       archetype,
       ambition: descriptor.ambition,
       traits,
-      attributes: mutateAttributes(makeBaseAttributes(archetype), variationSeeds)
+      attributes: mutateAttributes(makeBaseAttributes(archetype), variationSeeds),
+      ability: {
+        id: "wandering-mandate",
+        name: "流亡天命",
+        type: "随机",
+        description: "随机生成帝王没有固定专属能力。"
+      }
     },
     next
   ];
@@ -221,6 +231,12 @@ function resolveActionState(run: RunState, selection: ActionSelection): {
         factions = adjustFactions(factions, 6);
         logTitle = `远征战报：夺取${targetRegion.name}`;
         logDescription = `你的军政机器越过阻力，疆域向 ${targetRegion.name} 推进，新的边界已经写进战报。`;
+
+        if (run.emperor.id === "zhao-kuangyin" && resources.legitimacy >= 40) {
+          resources.legitimacy += 3;
+          foreignPressure -= 2;
+          logDescription += " 赵匡胤以杯酒释兵权收束军功，合法性更稳，列强压力也被暂时压低。";
+        }
       } else {
         resources.legitimacy -= 4;
         foreignPressure += 5;
@@ -303,12 +319,13 @@ function drawEvent(random: RunState["random"]): [RunState["currentEvent"], RunSt
   return pickOne(random, EVENT_LIBRARY);
 }
 
-export function createRunState(random: RunState["random"]): RunState {
+export function createRunState(random: RunState["random"], options: CreateRunOptions = {}): RunState {
   let next = random;
-  const [emperor, rngAfterEmperor] = createEmperor(next);
+  const [emperor, rngAfterEmperor] = options.emperorId ? [getEmperorProfileById(options.emperorId), next] : createEmperor(next);
   next = rngAfterEmperor;
-  const [startRegionId, rngAfterStart] = pickOne(next, START_REGION_IDS);
+  const [randomStartRegionId, rngAfterStart] = options.startRegionId ? [options.startRegionId, next] : pickOne(next, START_REGION_IDS);
   next = rngAfterStart;
+  const startRegionId = randomStartRegionId;
 
   const [initialHand, rngAfterHand] = fillHand([], [], next);
   next = rngAfterHand;
