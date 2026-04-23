@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+.vite/
+.superpowers/
+playwright-report/
+test-results/
+*.tsbuildinfo
